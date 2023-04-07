@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import Seo from "@/components/Seo";
 
 const API_KEY = "60dfbe512725b7dd377ff63a70fad821";
@@ -18,6 +19,9 @@ export default function Home() {
   console.log(movies, "movies");
   return (
     <div>
+      <Head>
+        <title>home이다 제발</title>
+      </Head>
       <Seo title={"Home"} />
       {!movies && <h4>Loading...</h4>}
       {movies?.map((movie) => (
