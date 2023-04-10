@@ -1,54 +1,48 @@
-import { useEffect, useState } from "react";
-import { Inter } from "next/font/google";
-import Seo from "@/components/Seo";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { useEffect, useState } from 'react';
+import { Inter } from 'next/font/google';
+import Seo from '@/components/Seo';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Home({ results }) {
-  const router = useRouter();
-  const onClick = (id, title) => {
-    router.push(`/movies/${title}/${id}`);
-  };
-  const [movies, setMovies] = useState();
-  useEffect(() => {
-    (async () => {
-      const { results } = await (await fetch(`/api/movies`)).json();
-      console.log(results);
-      setMovies(results);
-    })();
-  }, []);
-  console.log(movies, "movies");
+    const router = useRouter();
+    const onClick = (id, title) => {
+        router.push(`/movies/${title}/${id}`);
+    };
+    const [movies, setMovies] = useState();
+    useEffect(() => {
+        (async () => {
+            const { results } = await (await fetch(`/api/movies`)).json();
+            console.log(results);
+            setMovies(results);
+        })();
+    }, []);
+    console.log(movies, 'movies');
 
-  return (
-    <>
-      <div className="container">
-        <Seo title="home" />
-        {results?.map((item) => {
-          return (
-            <div
-              onClick={() => onClick(item.id, item.original_title)}
-              className="movie"
-              key={item.id}
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-              />
-              <h4>
-                <Link
-                  href={`/movies/${item.original_title}/${item.id}`}
-                  key={`titleLink${item.id}`}
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  {item.original_title}
-                </Link>
-              </h4>
-            </div>
-          );
-        })}
+    return (
+        <>
+            <div className="container">
+                <Seo title="home" />
+                {results?.map((item) => {
+                    return (
+                        <div onClick={() => onClick(item.id, item.original_title)} className="movie" key={item.id}>
+                            <img src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} />
+                            <h4>
+                                <Link
+                                    href={`/movies/${item.original_title}/${item.id}`}
+                                    key={`titleLink${item.id}`}
+                                    style={{ textDecoration: 'none', color: 'black' }}
+                                >
+                                    {item.original_title}
+                                </Link>
+                            </h4>
+                        </div>
+                    );
+                })}
 
-        <style jsx>{`
+                <style jsx>{`
           .container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -76,9 +70,9 @@ export default function Home({ results }) {
             color : red;
           }
         `}</style>
-      </div>
-    </>
-  );
+            </div>
+        </>
+    );
 }
 
 // const getServerSideProps = async () => {};
@@ -86,14 +80,12 @@ export default function Home({ results }) {
 // export getServerSideProps
 
 export async function getServerSideProps() {
-  const { results } = await (
-    await fetch(`http://localhost:3000//api/movies`)
-  ).json();
-  return {
-    props: {
-      results,
-    },
-  };
+    const { results } = await (await fetch(`http://localhost:3000/api/movies`)).json();
+    return {
+        props: {
+            results,
+        },
+    };
 }
 // 위에 함수는 서버에서만 실행된다.
 // 고로 그냥 fetch 를 프론트에서 쓰던거를 사용하면 안되고 프론트에 있는 api/movies 로 가도록 설정한다.
